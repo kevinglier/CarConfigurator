@@ -35,9 +35,11 @@ jobs:
       
     - name: Restore NPM dependencies
       run: npm install
+      working-directory: CarConfigurator
       
     - name: Build with NPM
       run: npm run build
+      working-directory: CarConfigurator
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
