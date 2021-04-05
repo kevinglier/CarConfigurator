@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest wwwroot/js/carconfigurator"
+    "build": "vue-cli-service build --dest ./wwwroot/js/carconfigurator"
   },
   "description": "CarConfigurator",
   "author": {
