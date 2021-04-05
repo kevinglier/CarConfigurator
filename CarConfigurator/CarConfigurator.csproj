@@ -21,11 +21,5 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
-  
-  <Target Name="npm" BeforeTargets="ComputeFilesToPublish">
-    <Exec Command="npm install" WorkingDirectory="."></Exec>
-    <Exec Command="npm run build" WorkingDirectory="."></Exec>
-  </Target>
-
 
 </Project>
