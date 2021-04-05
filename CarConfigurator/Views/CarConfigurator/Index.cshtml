@@ -13,4 +13,9 @@
 <!--<link href="/app.js" rel="preload" as="script"></head>-->
 
 <div id="app"></div>
-<script type="text/javascript" src="/js/carconfigurator/app.js"></script>
+<environment include="Development">
+    <script type="text/javascript" src="/js/carconfigurator/app.js"></script>
+</environment>
+<environment include="Production">
+    <script type="text/javascript" src="/js/carconfigurator/app.min.js"></script>
+</environment>
