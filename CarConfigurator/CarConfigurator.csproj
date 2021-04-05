@@ -21,5 +21,11 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
+  
+  <Target Name="client-app" BeforeTargets="ComputeFilesToPublish">
+    <Exec Command="npm install" WorkingDirectory="client-app"></Exec>
+    <Exec Command="npm run build" WorkingDirectory="client-app"></Exec>
+  </Target>
+
 
 </Project>

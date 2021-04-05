@@ -1,6 +1,7 @@
 ﻿const path = require("path");
 
 module.exports = {
+    filenameHashing: false,
     configureWebpack: config => {
         if (process.env.NODE_ENV === "production") {
             config.output.filename = '[name].min.js'

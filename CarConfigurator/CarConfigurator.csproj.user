@@ -6,7 +6,7 @@
     <ShowAllFiles>false</ShowAllFiles>
     <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>master_CarConfigurator20210403163104</NameOfLastUsedPublishProfile>
-    <ToolsVersionPromptShown>0.0</ToolsVersionPromptShown>
+    <ToolsVersionPromptShown>4.1</ToolsVersionPromptShown>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
