@@ -52,5 +52,5 @@ jobs:
       with:
         app-name: 'CarConfigurator20210403163104'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_e3bddee3bc614f8abb8b5e666ff92619 }}
+        publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
         package: .
