@@ -11,8 +11,9 @@ on:
 
 jobs:
   build:
+  
     runs-on: windows-latest
-
+    
     steps:
     - uses: actions/checkout@v2
 
@@ -23,6 +24,7 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
+      working-directory: .\Application
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
