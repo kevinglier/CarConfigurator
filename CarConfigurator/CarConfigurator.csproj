@@ -21,10 +21,5 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
-  
-  <Target Name="Build VueJS" BeforeTargets="Build">
-    <Message Text="Build in process" Importance="high" />
-    <Exec Command="npm run build"  />
-  </Target>
 
 </Project>
