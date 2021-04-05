@@ -16,6 +16,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
+    
+    - uses: actions/setup-node@master
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
@@ -30,6 +32,12 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
+      
+    - name: Restore NPM dependencies
+      run: npm install
+      
+    - name: Build with NPM
+      run: npm run build
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp

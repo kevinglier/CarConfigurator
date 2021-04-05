@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarConfigurator", "CarConfigurator\CarConfigurator.csproj", "{E624FA89-EDC1-44F2-B005-0107C97CC7AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarConfigurator.BL", "CarConfigurator.BL\CarConfigurator.BL.csproj", "{1ADBF34E-FA90-46FB-A6F4-CD2569A43F67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarConfigurator.BL", "CarConfigurator.BL\CarConfigurator.BL.csproj", "{1ADBF34E-FA90-46FB-A6F4-CD2569A43F67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarConfigurator.DL", "CarConfigurator.DL\CarConfigurator.DL.csproj", "{AFA4D3D1-A3EB-4046-88C1-1116F7A62AE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarConfigurator.DL", "CarConfigurator.DL\CarConfigurator.DL.csproj", "{AFA4D3D1-A3EB-4046-88C1-1116F7A62AE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

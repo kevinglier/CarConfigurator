@@ -3,7 +3,15 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>fa3fd3bc-b831-4573-baa4-1bf3b6452039</UserSecretsId>
+    <TypeScriptToolsVersion>4.1</TypeScriptToolsVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="src\assets\**" />
+    <Content Remove="src\assets\**" />
+    <EmbeddedResource Remove="src\assets\**" />
+    <None Remove="src\assets\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
