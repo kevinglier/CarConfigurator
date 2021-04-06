@@ -2,8 +2,8 @@
   "compileOnSave": true,
   "compilerOptions": {
     "noEmit": true,
-    "target": "es5",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
