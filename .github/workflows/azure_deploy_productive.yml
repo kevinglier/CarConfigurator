@@ -33,7 +33,9 @@ jobs:
 #      working-directory: CarConfigurator
    
     - name: dotnet clean
-      run: dotnet clean
+      run: |
+        dotnet clean
+        dotnet nuget locals all --clear
    
     - name: Restore dependencies
       run: dotnet restore
