@@ -4,6 +4,9 @@ using CarConfigurator.DL.Factories.Interfaces;
 
 namespace CarConfigurator.DL.Factories
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SqlConnectionFactory : ISqlConnectionFactory
     {
         public SqlConnection GetSqlConnection(string connectionString)

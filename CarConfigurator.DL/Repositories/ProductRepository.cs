@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 using CarConfigurator.DL.Models;
+using CarConfigurator.DL.Repositories.Base;
 using CarConfigurator.DL.Repositories.Interfaces;
 
 namespace CarConfigurator.DL.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : RepositoryBase, IProductRepository
     {
-        public ProductRepository(SqlConnection sqlConnection)
+        public ProductRepository(string connectionString) : base(connectionString)
         {
         }
 
         public Product GetProduct(int id)
         {
-            throw new System.NotImplementedException();
+            return new Product(ConnectionString, "", "", null);
         }
 
         public IEnumerable<Product> GetProducts(ProductOption productOption)
