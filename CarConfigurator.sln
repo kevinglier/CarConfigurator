@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarConfigurator.BL", "CarCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarConfigurator.DL", "CarConfigurator.DL\CarConfigurator.DL.csproj", "{AFA4D3D1-A3EB-4046-88C1-1116F7A62AE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarConfigurator", "CarConfigurator\CarConfigurator.csproj", "{CE1C897D-AAFA-4AFB-A018-A87AEC82D27D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarConfigurator", "CarConfigurator\CarConfigurator.csproj", "{CE1C897D-AAFA-4AFB-A018-A87AEC82D27D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC433DF9-269A-4077-B328-0F341EFF0E0B}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
