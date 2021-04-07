@@ -34,7 +34,7 @@ jobs:
    
     - name: dotnet clean
       run: |
-        dotnet clean
+        dotnet clean CarConfigurator.sln --configuration Release 
         dotnet nuget locals all --clear
    
     - name: Restore dependencies
