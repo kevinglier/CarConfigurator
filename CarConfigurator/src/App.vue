@@ -1,19 +1,21 @@
 <template>
     <div id="app">
-        <Home msg="Hello world!" />
+        <CarConfigurator :msg="car" />
     </div>
 </template>
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    import Home from './components/Home.vue';
+    import CarConfigurator from './components/CarConfigurator.vue';
 
     @Component({
         components: {
-            Home
+            CarConfigurator
         }
     })
-    export default class App extends Vue { }
+    export default class App extends Vue {
+        car: string|null = null;
+    }
 </script>
 
 <style>
