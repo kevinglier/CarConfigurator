@@ -1,4 +1,6 @@
-﻿namespace CarConfigurator.DL.Repositories.Base
+﻿using System.Data.SqlClient;
+
+namespace CarConfigurator.DL.Repositories.Base
 {
     public abstract class RepositoryBase
     {
@@ -8,5 +10,6 @@
         {
             ConnectionString = connectionString;
         }
+
     }
 }

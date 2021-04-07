@@ -7,24 +7,21 @@ namespace CarConfigurator.DL.Models
         public int Id { get; }
         public string Name { get; }
         public string Description { get; }
-        public string ProductImage { get; }
-        public int? OptionId { get; }
+        public int? ProductOptionId { get; }
 
-        public Product(int id, string name, string description, string productImage, int? optionId)
+        public Product(int id, string name, string description, int? productOptionId)
         {
             Id = id;
             Name = name;
             Description = description;
-            ProductImage = productImage;
-            OptionId = optionId;
+            ProductOptionId = productOptionId;
         }
 
-        public Product(string name, string description, string productImage, int? optionId)
+        public Product(string name, string description, int? productOptionId)
         {
             Name = name;
             Description = description;
-            ProductImage = productImage;
-            OptionId = optionId;
+            ProductOptionId = productOptionId;
         }
     }
 }

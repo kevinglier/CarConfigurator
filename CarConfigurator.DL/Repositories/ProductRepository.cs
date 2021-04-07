@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using CarConfigurator.DL.Models;
 using CarConfigurator.DL.Repositories.Base;
 using CarConfigurator.DL.Repositories.Interfaces;
+using Dapper;
 
 namespace CarConfigurator.DL.Repositories
 {
@@ -14,7 +15,12 @@ namespace CarConfigurator.DL.Repositories
 
         public Product GetProduct(int id)
         {
-            return new Product(ConnectionString, "", "", null);
+            const string sql = "SELECT * FROM Product WHERE Id = @Id;";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var product = connection.QuerySingleOrDefault<Product>(sql, new { Id = id });
+                
+            return product;
         }
 
         public IEnumerable<Product> GetProducts(ProductOption productOption)
