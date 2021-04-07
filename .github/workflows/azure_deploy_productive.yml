@@ -21,12 +21,13 @@ jobs:
     
     - uses: actions/setup-node@master
 
-    - uses: azure/appconfiguration-sync@v1
+    - uses: cschleiden/replace-tokens@v1
       with:
-        configurationFile: 'appsettings.json'
-        format: 'json'
-        connectionString: ${{ secrets.APP_CONNECTIONSTRING }}
-        separator: ':'
+        tokenPrefix: '___'
+        tokenSuffix: '___'
+        files: '["**/appsettings.json"]'
+      env:
+        APP_CONNECTIONSTRING: ${{secrets.APP_CONNECTIONSTRING}}
 
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
