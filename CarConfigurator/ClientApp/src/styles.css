@@ -1,16 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
 
-code {
-  color: #e01a76;
-}
+
+code { color: #e01a76; }
 
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.navbar {
+  background: linear-gradient(0deg, #424242, #5d5d5d);
+  box-shadow: 0 0.5rem 1.75rem rgba(0, 0, 0, .5);
+  border-bottom: 1px #868686 solid;
+}
+
+.navbar a { color: #fff; }
+.navbar a:hover,
+.navbar a:link,
+.navbar a:active { color: #ebebeb; }
+  .navbar li.link-active a {
+    text-shadow: 0 0 14px #ffffff;
+    color: #fff;
+  }
+
+  main.content a {
+    color: #0366d6;
+  }
+
+main.content a:hover,
+main.content a:link,
+main.content a:active { color: #004a9d; }

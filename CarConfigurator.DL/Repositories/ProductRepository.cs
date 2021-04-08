@@ -30,7 +30,12 @@ namespace CarConfigurator.DL.Repositories
 
         public IEnumerable<Product> GetMainProducts()
         {
-            throw new System.NotImplementedException();
+            const string sql = "SELECT * FROM Product WHERE ProductOptionId IS NULL;";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var product = connection.Query<Product>(sql);
+
+            return product;
         }
     }
 }

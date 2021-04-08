@@ -1,3 +1,5 @@
+using CarConfigurator.BL.Interfaces;
+using CarConfigurator.BL.Providers;
 using CarConfigurator.DL.Repositories;
 using CarConfigurator.DL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -29,7 +31,8 @@ namespace CarConfigurator
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddScoped<IProductRepository>(x => new ProductRepository(Configuration.GetConnectionString("CarConfigurator")));
+            services.AddSingleton<IProductRepository>(x => new ProductRepository(Configuration.GetConnectionString("CarConfigurator")));
+            services.AddSingleton<ICarModelProvider, CarModelProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

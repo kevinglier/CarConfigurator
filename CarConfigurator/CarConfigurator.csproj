@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarConfigurator.BL\CarConfigurator.BL.csproj" />
     <ProjectReference Include="..\CarConfigurator.DL\CarConfigurator.DL.csproj" />
   </ItemGroup>
 
