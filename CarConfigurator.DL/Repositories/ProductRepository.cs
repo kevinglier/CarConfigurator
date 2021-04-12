@@ -37,5 +37,15 @@ namespace CarConfigurator.DL.Repositories
 
             return product;
         }
+
+        public Product GetByName(string name)
+        {
+            const string sql = "SELECT * FROM Product WHERE Name LIKE @Name";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var product = connection.QuerySingleOrDefault<Product>(sql, new { Name = name});
+
+            return product;
+        }
     }
 }

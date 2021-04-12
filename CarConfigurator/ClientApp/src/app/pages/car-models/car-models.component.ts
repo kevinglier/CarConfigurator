@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { CarModelService } from '../../services/car-model.service';
+import { CarModel } from '../../models/CarModel';
 
 @Component({
   selector: 'app-car-models-component',
@@ -14,14 +15,11 @@ export class CarModelsComponent {
 
   public carModels: CarModel[];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<CarModel[]>(baseUrl + 'carmodel/list').subscribe(result => {
+  constructor(
+    private _carModelService: CarModelService
+  ) {
+    _carModelService.getModelList().subscribe(result => {
       this.carModels = result;
     }, error => console.error(error));
   }
-}
-
-interface CarModel {
-  name: string;
-  description: string;
 }

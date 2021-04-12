@@ -19,5 +19,12 @@ namespace CarConfigurator.DL.Repositories.Interfaces
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Product> GetMainProducts();
+
+        /// <summary>
+        /// Returns a product with the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Product GetByName(string name);
     }
 }

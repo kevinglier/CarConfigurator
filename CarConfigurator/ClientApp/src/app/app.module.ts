@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CarModelsComponent } from "./pages/car-models/car-models.component";
+import { CarConfiguratorComponent } from "./pages/car-configurator/car-configurator.component";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { CarModelsComponent } from "./pages/car-models/car-models.component";
     NavMenuComponent,
     HomeComponent,
     CarModelsComponent,
+    CarConfiguratorComponent,
     FetchDataComponent
   ],
   imports: [
@@ -26,10 +28,10 @@ import { CarModelsComponent } from "./pages/car-models/car-models.component";
       //{ path: '', component: HomeComponent, pathMatch: 'full' },
       { path: '', redirectTo: 'models', pathMatch: 'full' },
       { path: 'models', component: CarModelsComponent },
+      { path: 'configure/:model', component: CarConfiguratorComponent },
       { path: 'fetch-data', component: FetchDataComponent }
     ])
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -25,5 +25,11 @@ namespace CarConfigurator.Controllers
         {
             return _carModelProvider.GetCarModels(false);
         }
+
+        [HttpGet("GetByName/{modelName}")]
+        public CarModel GetByName(string modelName)
+        {
+            return _carModelProvider.GetCarModelByName(modelName, true);
+        }
     }
 }
