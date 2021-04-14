@@ -9,11 +9,25 @@
       Auto-Vorschau
     </div>
     <div class="col-md-4">
-      <!--
-  <div *ngFor="let option of configurator.options" class="card">
 
-  </div>
-      -->
+      <form #heroForm="ngForm">
+        {{diagnostic}}
+        <div *ngFor="let option of configurator.options" class="form-group">
+          <label for="name">{{ option.name }}:</label>
+          <input type="text" class="form-control" id="name" required [(ngModel)]="configuration.options[option.id].value" name="carconfiguration_option_{{option.id}}">
+          <select class="form-control" id="carConfigurationOption{{option.id}}"
+                  required
+                  [(ngModel)]="configuration.options[0].value" name="carconfiguration_option_0">
+            <option *ngFor="let color of ['green', 'yellow']" [value]="color">{{color}}</option>
+          </select>
+        </div>
+      </form>
+
+
+      <div *ngFor="let option of configurator.options" class="card">
+
+      </div>
+
     </div>
   </div>
 </div>

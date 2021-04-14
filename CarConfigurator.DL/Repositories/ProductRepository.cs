@@ -30,7 +30,7 @@ namespace CarConfigurator.DL.Repositories
 
         public IEnumerable<Product> GetMainProducts()
         {
-            const string sql = "SELECT * FROM Product WHERE ProductOptionId IS NULL;";
+            const string sql = "SELECT * FROM Product WHERE IsOptionProduct=0";
 
             using var connection = new SqlConnection(ConnectionString);
             var product = connection.Query<Product>(sql);

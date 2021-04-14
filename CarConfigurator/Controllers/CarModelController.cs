@@ -23,13 +23,13 @@ namespace CarConfigurator.Controllers
         [HttpGet("List")]
         public IEnumerable<CarModel> GetList()
         {
-            return _carModelProvider.GetCarModels(false);
+            return _carModelProvider.GetCarModels();
         }
 
         [HttpGet("GetByName/{modelName}")]
         public CarModel GetByName(string modelName)
         {
-            return _carModelProvider.GetCarModelByName(modelName, true);
+            return _carModelProvider.GetCarModelByName(modelName);
         }
     }
 }

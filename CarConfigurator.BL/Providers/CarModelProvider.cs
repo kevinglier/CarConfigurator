@@ -18,14 +18,14 @@ namespace CarConfigurator.BL.Providers
             _productRepository = productRepository;
         }
 
-        public IEnumerable<CarModel> GetCarModels(bool withAvailableOptions)
+        public IEnumerable<CarModel> GetCarModels()
         {
             var products = _productRepository.GetMainProducts();
 
             return products.Select(MapProductToCarModel);
         }
 
-        public CarModel GetCarModelByName(string modelName, bool withAvailableOptions)
+        public CarModel GetCarModelByName(string modelName)
         {
             var product = _productRepository.GetByName(modelName);
 
@@ -34,10 +34,7 @@ namespace CarConfigurator.BL.Providers
 
         private static CarModel MapProductToCarModel(Product product)
         {
-            if (product != null)
-                return new(product.Name, product.Description);
-
-            return null;
+            return product != null ? new CarModel(product.Id, product.Name, product.Description) : null;
         }
     }
 }
