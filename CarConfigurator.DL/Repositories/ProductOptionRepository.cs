@@ -31,5 +31,23 @@ namespace CarConfigurator.DL.Repositories
 
             return productOptions;
         }
+
+        public IEnumerable<ProductOption> GetProductOptionsByEAN(string ean)
+        {
+            const string sql = @"
+                SELECT *
+                  FROM ProductOption
+                 WHERE Id IN (
+                    SELECT po.Id
+	                  FROM ProductOption_Product po_p
+	                  JOIN ProductOption po ON po.Id = po_p.ProductOptionId
+	                 WHERE po_p.ProductId = (SELECT Id FROM Product WHERE EAN=@ean) )
+                ";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var productOptions = connection.Query<ProductOption>(sql, new { ean });
+            
+            return productOptions;
+        }
     }
 }

@@ -8,23 +8,32 @@ namespace CarConfigurator.DL.Repositories.Interfaces
         public Product GetProduct(int id);
 
         /// <summary>
-        /// Returns the productOption which belong to a ProductOption
-        /// </summary>
-        /// <param name="productOption"></param>
-        /// <returns></returns>
-        public IEnumerable<Product> GetProducts(ProductOption productOption);
-
-        /// <summary>
         /// Returns all main products (which doesn't belong to a product option)
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Product> GetMainProducts();
 
         /// <summary>
-        /// Returns a product with the specified name.
+        /// Returns a product with the specified EAN.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="ean"></param>
         /// <returns></returns>
-        Product GetByName(string name);
+        public Product GetByEAN(string ean);
+
+        /// <summary>
+        /// Returns the products which belong to a product option
+        /// </summary>
+        /// <param name="mainProduct"></param>
+        /// <param name="productOption"></param>
+        /// <returns></returns>
+        IEnumerable<Product> GetOptionProducts(Product mainProduct, ProductOption productOption);
+
+        /// <summary>
+        /// Returns the products which belong to a product option
+        /// </summary>
+        /// <param name="mainProductId"></param>
+        /// <param name="productOptionId"></param>
+        /// <returns></returns>
+        IEnumerable<Product> GetOptionProducts(int mainProductId, int productOptionId);
     }
 }

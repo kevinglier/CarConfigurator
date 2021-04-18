@@ -6,5 +6,6 @@ namespace CarConfigurator.DL.Repositories.Interfaces
     public interface IProductOptionRepository : IRepository
     {
         public IEnumerable<ProductOption> GetProductOptions(int productId);
+        public IEnumerable<ProductOption> GetProductOptionsByEAN(string ean);
     }
 }

@@ -18,16 +18,22 @@ namespace CarConfigurator.BL.Providers
             _productOptionRepository = productOptionRepository;
         }
 
-        public IEnumerable<CarModel> GetOptionsForModel(CarModel model)
+        /// <inheritdoc />
+        public IEnumerable<CarModelOption> GetListForModel(CarModel model)
         {
-            var products = _productOptionRepository.GetProductOptions(model.ProductId);
+            if (model == null)
+                return null;
+
+            var products = _productOptionRepository.GetProductOptionsByEAN(model.EAN);
 
             return products.Select(MapProductOptionToCarModelOptions);
         }
 
-        private static CarModel MapProductOptionToCarModelOptions(ProductOption productOption)
+        private static CarModelOption MapProductOptionToCarModelOptions(ProductOption productOption)
         {
-            return productOption != null ? new CarModel(productOption.Id, productOption.Name, productOption.Description) : null;
+            return productOption != null
+                ? new CarModelOption(productOption.Id, productOption.Name, productOption.Description)
+                : null;
         }
     }
 }

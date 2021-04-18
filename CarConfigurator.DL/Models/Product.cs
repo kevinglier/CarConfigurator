@@ -5,14 +5,21 @@ namespace CarConfigurator.DL.Models
     public class Product
     {
         public int Id { get; }
+        public string EAN { get; }
         public string Name { get; }
         public string Description { get; }
         public int ManufacturerId { get; }
         public bool IsOptionProduct { get; }
 
-        public Product(int id, string name, string description, int manufacturerId, bool isOptionProduct)
+        public Product()
+        {
+            
+        }
+
+        public Product(int id, string ean, string name, string description, int manufacturerId, bool isOptionProduct)
         {
             Id = id;
+            EAN = ean;
             Name = name;
             Description = description;
             ManufacturerId = manufacturerId;

@@ -10,23 +10,20 @@
     </div>
     <div class="col-md-4">
 
-      <form #heroForm="ngForm">
+      <form *ngIf="configuration.availableOptions" #heroForm="ngForm">
         {{diagnostic}}
-        <div *ngFor="let option of configurator.options" class="form-group">
-          <label for="name">{{ option.name }}:</label>
-          <input type="text" class="form-control" id="name" required [(ngModel)]="configuration.options[option.id].value" name="carconfiguration_option_{{option.id}}">
-          <select class="form-control" id="carConfigurationOption{{option.id}}"
-                  required
-                  [(ngModel)]="configuration.options[0].value" name="carconfiguration_option_0">
-            <option *ngFor="let color of ['green', 'yellow']" [value]="color">{{color}}</option>
-          </select>
+        <div *ngFor="let option of configuration.availableOptions" class="card">
+          <div class="form-group">
+            <label for="name">{{ option.name }}:</label>
+            <!--<input type="text" class="form-control" id="name" required [(ngModel)]="configuration.selectedOptionProducts[option.id].value" name="carconfiguration_option_{{option.id}}">-->
+            <select class="form-control" id="carConfigurationOption{{option.id}}"
+                    required
+                    [(ngModel)]="configuration.selectedOptionProducts[option.id]" name="carconfiguration_option_{{option.id}}">
+              <option *ngFor="let opt of getProductsForOption(option.id)" [value]="opt">{{opt.name}}</option>
+            </select>
+          </div>
         </div>
       </form>
-
-
-      <div *ngFor="let option of configurator.options" class="card">
-
-      </div>
 
     </div>
   </div>

@@ -1,13 +1,36 @@
 import { CarModel } from './CarModel';
+import { CarModelOption } from './CarModelOption';
+import { CarModelOptionProduct } from './CarModelOptionProduct';
 
 export class CarConfiguration {
+  private _selectedOptionProducts: { [optionId: number]: CarModelOptionProduct };
+  private _availableOptions: CarModelOption[];
   private _model: CarModel;
 
-  public get model(): CarModel {
-    return this._model;
-  }
+  get model(): CarModel { return this._model; }
 
-  constructor(model: CarModel) {
+  get availableOptions(): CarModelOption[] { return this._availableOptions; }
+
+  get selectedOptionProducts(): { [optionId: number]: CarModelOptionProduct } { return this._selectedOptionProducts; }
+  set selectedOptionProducts(value: { [optionId: number]: CarModelOptionProduct }) { this._selectedOptionProducts = value; }
+
+  constructor(
+    model: CarModel,
+    availableOptions: CarModelOption[],
+    selectedOptionProducts: { [optionId: number]: CarModelOptionProduct } = null
+  ) {
+    this._availableOptions = availableOptions;
     this._model = model;
+
+    selectedOptionProducts = selectedOptionProducts ? selectedOptionProducts : {};
+
+    let ids = this._availableOptions.map(x => x.id);
+    for (let id of ids) {
+      // Set currently unselected options to empty to reflect the number of available options.
+      if (!selectedOptionProducts[id])
+        selectedOptionProducts[id] = null;
+    }
+
+    this._selectedOptionProducts = selectedOptionProducts;
   }
 }

@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarConfigurator.DL.Models;
-
-namespace CarConfigurator.BL.Models
+﻿namespace CarConfigurator.BL.Models
 {
     public class CarModel : IProduct
     {
         public string Name { get; }
         public string Description { get; }
-        public int ProductId { get; set; }
+        public string EAN { get; set; }
 
-        public CarModel(int productId, string name, string description)
+        public CarModel(string ean, string name, string description)
         {
-            ProductId = productId;
+            EAN = ean;
             Name = name;
             Description = description;
         }

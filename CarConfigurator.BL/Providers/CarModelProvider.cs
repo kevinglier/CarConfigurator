@@ -18,6 +18,7 @@ namespace CarConfigurator.BL.Providers
             _productRepository = productRepository;
         }
 
+        /// <inheritdoc />
         public IEnumerable<CarModel> GetCarModels()
         {
             var products = _productRepository.GetMainProducts();
@@ -25,16 +26,17 @@ namespace CarConfigurator.BL.Providers
             return products.Select(MapProductToCarModel);
         }
 
-        public CarModel GetCarModelByName(string modelName)
+        /// <inheritdoc />
+        public CarModel GetCarModelByEAN(string ean)
         {
-            var product = _productRepository.GetByName(modelName);
+            var product = _productRepository.GetByEAN(ean);
 
             return MapProductToCarModel(product);
         }
 
         private static CarModel MapProductToCarModel(Product product)
         {
-            return product != null ? new CarModel(product.Id, product.Name, product.Description) : null;
+            return product != null ? new CarModel(product.EAN, product.Name, product.Description) : null;
         }
     }
 }

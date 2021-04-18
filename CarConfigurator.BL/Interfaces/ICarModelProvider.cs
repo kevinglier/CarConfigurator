@@ -6,6 +6,6 @@ namespace CarConfigurator.BL.Interfaces
     public interface ICarModelProvider
     {
         IEnumerable<CarModel> GetCarModels();
-        CarModel GetCarModelByName(string modelName);
+        CarModel GetCarModelByEAN(string ean);
     }
 }

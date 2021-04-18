@@ -5,6 +5,6 @@ namespace CarConfigurator.BL.Interfaces
 {
     public interface ICarModelOptionProvider
     {
-        IEnumerable<CarModel> GetOptionsForModel(CarModel model);
+        IEnumerable<CarModelOption> GetListForModel(CarModel model);
     }
 }

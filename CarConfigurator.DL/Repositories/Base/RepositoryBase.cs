@@ -1,4 +1,7 @@
-﻿using System.Data.SqlClient;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
+using CarConfigurator.DL.Models;
+using Dapper;
 
 namespace CarConfigurator.DL.Repositories.Base
 {
@@ -10,6 +13,5 @@ namespace CarConfigurator.DL.Repositories.Base
         {
             ConnectionString = connectionString;
         }
-
     }
 }

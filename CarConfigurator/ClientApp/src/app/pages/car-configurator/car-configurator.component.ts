@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router';
 import { ConfiguratorService } from '../../services/configurator.service';
+import { CarConfiguration } from '../../models/CarConfiguration';
+import { CarModelOptionProduct } from '../../models/CarModelOptionProduct';
 
 @Component({
   selector: 'app-car-configurator-component',
@@ -13,7 +15,7 @@ export class CarConfiguratorComponent {
     this.currentCount++;
   }
 
-  public configuration;
+  public configuration: CarConfiguration;
 
   constructor(
    private _configuratorService: ConfiguratorService,
@@ -24,14 +26,15 @@ export class CarConfiguratorComponent {
   ngOnInit() {
 
     this._activatedRoute.paramMap.subscribe((params: ParamMap) => {
-      const modelName = params.get('model');
+      const ean = params.get('model');
 
-      this._configuratorService.getNewConfigurationForModel(modelName).subscribe(
+      this._configuratorService.getNewConfigurationForModel(ean).subscribe(
         result => {
           if (!result)
             this._router.navigate(['/']);
 
           this.configuration = result;
+          console.log('configuration', this.configuration);
         },
         error => { 
           console.error(error);
@@ -39,5 +42,9 @@ export class CarConfiguratorComponent {
         }
       );
     });
+  }
+  
+  getProductsForOption(optionId: number): CarModelOptionProduct[] {
+    return this.configuration.availableOptions.find(x => x.id === optionId).products;
   }
 }
