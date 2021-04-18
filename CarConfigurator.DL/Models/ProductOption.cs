@@ -1,7 +1,10 @@
-﻿namespace CarConfigurator.DL.Models
+﻿using System.Collections.Generic;
+
+namespace CarConfigurator.DL.Models
 {
     public class ProductOption
     {
+        public IEnumerable<int> DefaultProductIds;
         public int Id { get; }
         public string EAN { get; }
         public int ProductId { get; }
@@ -13,13 +16,14 @@
             
         }
 
-        public ProductOption(int id, string ean, int productId, string name, string description)
+        public ProductOption(int id, string ean, int productId, string name, string description, IEnumerable<int> defaultProductIds)
         {
             Id = id;
             EAN = ean;
             ProductId = productId;
             Name = name;
             Description = description;
+            DefaultProductIds = defaultProductIds;
         }
     }
 }

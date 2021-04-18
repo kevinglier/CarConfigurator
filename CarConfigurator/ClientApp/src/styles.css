@@ -33,3 +33,7 @@ code { color: #e01a76; }
 main.content a:hover,
 main.content a:link,
 main.content a:active { color: #004a9d; }
+
+main.content {
+  padding-top: 15px;
+}

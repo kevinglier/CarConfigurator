@@ -12,7 +12,10 @@ export class CarConfiguration {
   get availableOptions(): CarModelOption[] { return this._availableOptions; }
 
   get selectedOptionProducts(): { [optionId: number]: CarModelOptionProduct } { return this._selectedOptionProducts; }
-  set selectedOptionProducts(value: { [optionId: number]: CarModelOptionProduct }) { this._selectedOptionProducts = value; }
+
+  set selectedOptionProducts(value: { [optionId: number]: CarModelOptionProduct }) {
+    this._selectedOptionProducts = value;
+  }
 
   constructor(
     model: CarModel,
@@ -24,11 +27,22 @@ export class CarConfiguration {
 
     selectedOptionProducts = selectedOptionProducts ? selectedOptionProducts : {};
 
-    let ids = this._availableOptions.map(x => x.id);
+    const ids = this._availableOptions.map(x => x.id);
     for (let id of ids) {
+
+      const option = this._availableOptions.find(opt => opt.id == id);
       // Set currently unselected options to empty to reflect the number of available options.
-      if (!selectedOptionProducts[id])
-        selectedOptionProducts[id] = null;
+      if (!selectedOptionProducts[id]) {
+
+        console.log('xx', option.products.find(prod => prod.isDefault));
+
+        selectedOptionProducts[id] = option.products.find(prod => prod.isDefault);
+      } else {
+        
+        /*selectedOptionProducts[id] = this._availableOptions
+          .map(opt => opt.products)
+          .find((prod: CarModelOptionProduct) => prod.isDefault);*/
+      }
     }
 
     this._selectedOptionProducts = selectedOptionProducts;

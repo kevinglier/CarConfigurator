@@ -1,27 +1,44 @@
 <div class="container">
-  <h1>Konfigurator</h1>
 
-  <h2>{{configuration.model.name}}</h2>
-  <p>{{configuration.model.description}}</p>
 
   <div class="row">
     <div class="col-md-8">
-      Auto-Vorschau
+
+      <h1>Konfigurator</h1>
+
+      <h2>{{configuration.model.name}}</h2>
+      <p>{{configuration.model.description}}</p>
+
+      <h4>Auto-Vorschau</h4>
+
+      {{ configuration.selectedOptionProducts[1]?.name }}
+
     </div>
     <div class="col-md-4">
 
-      <form *ngIf="configuration.availableOptions" #heroForm="ngForm">
-        {{diagnostic}}
-        <div *ngFor="let option of configuration.availableOptions" class="card">
-          <div class="form-group">
-            <label for="name">{{ option.name }}:</label>
-            <!--<input type="text" class="form-control" id="name" required [(ngModel)]="configuration.selectedOptionProducts[option.id].value" name="carconfiguration_option_{{option.id}}">-->
-            <select class="form-control" id="carConfigurationOption{{option.id}}"
-                    required
-                    [(ngModel)]="configuration.selectedOptionProducts[option.id]" name="carconfiguration_option_{{option.id}}">
-              <option *ngFor="let opt of getProductsForOption(option.id)" [value]="opt">{{opt.name}}</option>
-            </select>
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Preis:</h5>
+          <div class="carconfigurator-price">
+            {{ price | currency }} €
           </div>
+        </div>
+      </div>
+
+      <form *ngIf="configuration.availableOptions" #heroForm="ngForm">
+        <div class="card">
+          {{diagnostic}}
+          <ul *ngFor="let option of configuration.availableOptions" class="list-group list-group-flush">
+            <li class="list-group-item">
+              <label for="name">{{ option.name }}:</label>
+              <!--<input type="text" class="form-control" id="name" required [(ngModel)]="configuration.selectedOptionProducts[option.id].value" name="carconfiguration_option_{{option.id}}">-->
+              <select class="form-control" id="carConfigurationOption{{option.id}}"
+                      required
+                      [ngModel]="configuration.selectedOptionProducts[option.id]" (ngModelChange)="setSelectedOptionProduct($event, option)" name="carconfiguration_option_{{option.id}}">
+                <option *ngFor="let optionProduct of getProductsForOption(option.id)" [ngValue]="optionProduct">{{optionProduct.name}}</option>
+              </select>
+            </li>
+          </ul>
         </div>
       </form>
 

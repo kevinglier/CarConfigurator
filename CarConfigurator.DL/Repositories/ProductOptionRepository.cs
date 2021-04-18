@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using CarConfigurator.DL.Models;
 using CarConfigurator.DL.Repositories.Base;
 using CarConfigurator.DL.Repositories.Interfaces;
@@ -46,8 +47,34 @@ namespace CarConfigurator.DL.Repositories
 
             using var connection = new SqlConnection(ConnectionString);
             var productOptions = connection.Query<ProductOption>(sql, new { ean });
-            
+
+            var mainProductId = connection.ExecuteScalar<int>("SELECT Id FROM Product WHERE EAN=@ean", new {ean});
+
+            productOptions = productOptions.Select(productOption =>
+            {
+
+                productOption.DefaultProductIds = GetDefaultProducts(productOption, mainProductId);
+
+                return productOption;
+            });
+
             return productOptions;
+        }
+
+        private IEnumerable<int> GetDefaultProducts(ProductOption productOption, int mainProductId)
+        {
+            const string sql = @"
+                SELECT ProductOption_ProductId
+                  FROM ProductOption_Product po_p
+                 WHERE po_p.ProductId = @mainProductId
+                   AND po_p.ProductOptionId = @productOptionId
+                   AND IsDefault=1
+                ";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var defaultProductIds = connection.Query<int>(sql, new { productOptionId = productOption.Id, mainProductId });
+            
+            return defaultProductIds;
         }
     }
 }

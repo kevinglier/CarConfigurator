@@ -38,7 +38,7 @@ namespace CarConfigurator.BL.Providers
             foreach (var option in options)
             {
                 var optionProducts = _productRepository.GetOptionProducts(product.Id, option.Id)
-                    .Select(prod => new CarModelOptionProduct(prod.Id, prod.Name, prod.Description));
+                    .Select(prod => new CarModelOptionProduct(prod.Id, prod.Name, prod.Description, option.DefaultProductIds != null && option.DefaultProductIds.Contains(prod.Id) ));
 
                 carModelOptions.Add(new CarModelOption(option.Id, option.Name, option.Description, optionProducts));
             }

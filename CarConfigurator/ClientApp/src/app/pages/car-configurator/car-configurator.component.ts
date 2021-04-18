@@ -3,17 +3,15 @@ import { Router, ActivatedRoute, ParamMap, NavigationEnd } from '@angular/router
 import { ConfiguratorService } from '../../services/configurator.service';
 import { CarConfiguration } from '../../models/CarConfiguration';
 import { CarModelOptionProduct } from '../../models/CarModelOptionProduct';
+import { CarModelOption } from '../../models/CarModelOption';
 
 @Component({
   selector: 'app-car-configurator-component',
   templateUrl: './car-configurator.component.html'
 })
 export class CarConfiguratorComponent {
-  public currentCount = 0;
 
-  public incrementCounter() {
-    this.currentCount++;
-  }
+  public price = 0;
 
   public configuration: CarConfiguration;
 
@@ -41,10 +39,19 @@ export class CarConfiguratorComponent {
           this._router.navigate(['/']);
         }
       );
+
+      this.price = 20000;
     });
   }
   
   getProductsForOption(optionId: number): CarModelOptionProduct[] {
     return this.configuration.availableOptions.find(x => x.id === optionId).products;
+  }
+
+  setSelectedOptionProduct($event: CarModelOptionProduct, option: CarModelOption): void {
+    
+    console.log('option: ', option, 'event: ', $event);
+
+    this.configuration.selectedOptionProducts[option.id] = $event;
   }
 }
