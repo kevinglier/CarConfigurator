@@ -1,6 +1,6 @@
 export class CarModel {
-  ean: string;
-  name: string;
-  description: string;
-  basePrice: number;
+    ean: string;
+    name: string;
+    description: string;
+    basePrice: number;
 }

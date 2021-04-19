@@ -14,20 +14,20 @@ namespace CarConfigurator.Controllers
     public class CarConfiguratorController : ControllerBase
     {
         private readonly ILogger<CarModelController> _logger;
-        private readonly ICarModelProvider _carModelProvider;
-        private readonly ICarModelOptionProvider _carModelOptionProvider;
-        private readonly ICarConfiguratorProvider _carConfiguratorProvider;
+        private readonly ICarModelService _carModelService;
+        private readonly ICarModelOptionService _carModelOptionService;
+        private readonly ICarConfiguratorService _carConfiguratorService;
 
         public CarConfiguratorController(
             ILogger<CarModelController> logger,
-            ICarModelProvider carModelProvider,
-            ICarModelOptionProvider carModelOptionProvider,
-            ICarConfiguratorProvider carConfiguratorProvider)
+            ICarModelService carModelService,
+            ICarModelOptionService carModelOptionService,
+            ICarConfiguratorService carConfiguratorService)
         {
             _logger = logger;
-            _carModelProvider = carModelProvider;
-            _carModelOptionProvider = carModelOptionProvider;
-            _carConfiguratorProvider = carConfiguratorProvider;
+            _carModelService = carModelService;
+            _carModelOptionService = carModelOptionService;
+            _carConfiguratorService = carConfiguratorService;
         }
 
         [HttpPost("summary")]
@@ -39,7 +39,7 @@ namespace CarConfigurator.Controllers
             CarConfiguratorSummary priceSummary;
             try
             {
-                priceSummary = _carConfiguratorProvider.GetSummaryForSelectedOptionProducts(carModelOptionSelectionRequest.CarModelEAN, carModelOptionSelectionRequest.OptionProducts, carModelOptionSelectionRequest.Code);
+                priceSummary = _carConfiguratorService.GetSummaryForSelectedOptionProducts(carModelOptionSelectionRequest.CarModelEAN, carModelOptionSelectionRequest.OptionProducts, carModelOptionSelectionRequest.Code);
             }
             catch(Exception e)
             {
@@ -58,7 +58,7 @@ namespace CarConfigurator.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new ApiBadRequestResponse(ModelState));
 
-            var configuration = _carConfiguratorProvider.GetSavedUserConfiguration(code);
+            var configuration = _carConfiguratorService.GetSavedUserConfiguration(code);
 
             return Ok(new ApiOkResponse(configuration));
         }

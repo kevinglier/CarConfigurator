@@ -10,35 +10,35 @@ namespace CarConfigurator.Controllers
     public class CarModelController : ControllerBase
     {
         private readonly ILogger<CarModelController> _logger;
-        private readonly ICarModelProvider _carModelProvider;
-        private readonly ICarModelOptionProvider _carModelOptionProvider;
-        private readonly ICarConfiguratorProvider _carConfiguratorProvider;
+        private readonly ICarModelService _carModelService;
+        private readonly ICarModelOptionService _carModelOptionService;
+        private readonly ICarConfiguratorService _carConfiguratorService;
 
         public CarModelController(
             ILogger<CarModelController> logger,
-            ICarModelProvider carModelProvider,
-            ICarModelOptionProvider carModelOptionProvider,
-            ICarConfiguratorProvider carConfiguratorProvider)
+            ICarModelService carModelService,
+            ICarModelOptionService carModelOptionService,
+            ICarConfiguratorService carConfiguratorService)
         {
             _logger = logger;
-            _carModelProvider = carModelProvider;
-            _carModelOptionProvider = carModelOptionProvider;
-            _carConfiguratorProvider = carConfiguratorProvider;
+            _carModelService = carModelService;
+            _carModelOptionService = carModelOptionService;
+            _carConfiguratorService = carConfiguratorService;
         }
 
         [HttpGet("List")]
         public IActionResult GetList()
         {
-            return Ok(new ApiOkResponse(_carModelProvider.GetCarModels()));
+            return Ok(new ApiOkResponse(_carModelService.GetCarModels()));
         }
 
-        [HttpGet("{ean}")]
-        public IActionResult GetByEAN(string ean)
+        [HttpGet("{name}")]
+        public IActionResult GetByName(string name)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ApiBadRequestResponse(ModelState));
 
-            var model = _carModelProvider.GetCarModelByEAN(ean);
+            var model = _carModelService.GetCarModelByName(name);
 
             if (model == null)
                 return NotFound(new ApiResponse(400, "Car model invalid."));
@@ -46,18 +46,18 @@ namespace CarConfigurator.Controllers
             return Ok(new ApiOkResponse(model));
         }
 
-        [HttpGet("{ean}/option/list")]
-        public IActionResult GetOptionList(string ean)
+        [HttpGet("{name}/option/list")]
+        public IActionResult GetOptionList(string name)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ApiBadRequestResponse(ModelState));
 
-            var model = _carModelProvider.GetCarModelByEAN(ean);
+            var model = _carModelService.GetCarModelByName(name);
 
             if (model == null)
                 return NotFound(new ApiResponse(400, "Car model invalid."));
 
-            var carConfigurator = _carConfiguratorProvider.GetCarModelsOptionsAndProducts(model);
+            var carConfigurator = _carConfiguratorService.GetCarModelsOptionsAndProducts(model);
 
             return Ok(new ApiOkResponse(carConfigurator));
         }

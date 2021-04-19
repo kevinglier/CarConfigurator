@@ -5,14 +5,14 @@ using CarConfigurator.BL.Models;
 using CarConfigurator.DL.Models;
 using CarConfigurator.DL.Repositories.Interfaces;
 
-namespace CarConfigurator.BL.Providers
+namespace CarConfigurator.BL.Services
 {
-    public class CarModelOptionProvider : ICarModelOptionProvider
+    public class CarModelOptionService : ICarModelOptionService
     {
         private readonly IProductRepository _productRepository;
         private readonly IProductOptionRepository _productOptionRepository;
 
-        public CarModelOptionProvider(IProductRepository productRepository, IProductOptionRepository productOptionRepository)
+        public CarModelOptionService(IProductRepository productRepository, IProductOptionRepository productOptionRepository)
         {
             _productRepository = productRepository;
             _productOptionRepository = productOptionRepository;
@@ -29,6 +29,11 @@ namespace CarConfigurator.BL.Providers
             return products.Select(MapProductOptionToCarModelOptions);
         }
 
+        /// <summary>
+        /// Maps an product option to a car model option
+        /// </summary>
+        /// <param name="productOption"></param>
+        /// <returns></returns>
         private static CarModelOption MapProductOptionToCarModelOptions(ProductOption productOption)
         {
             return productOption != null

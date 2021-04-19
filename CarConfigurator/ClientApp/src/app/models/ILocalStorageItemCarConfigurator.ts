@@ -1,3 +1,3 @@
 interface ILocalStorageItemCarConfigurator {
-  saves: { [ean: string]: ILocalStorageItemCarConfiguratorSave }
+    saves: { [ean: string]: ILocalStorageItemCarConfiguratorSave }
 }

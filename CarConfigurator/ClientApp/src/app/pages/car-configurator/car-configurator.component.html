@@ -37,37 +37,44 @@
     <div *ngIf="configuration" class="row flex-column-reverse flex-md-row">
         <div class="col-lg-8 col md-6">
 
-            <h4>Ihre Auswahl</h4>
+            <ng-container *ngIf="priceSummary">
+                <h4>Ihre Auswahl</h4>
 
-            <table *ngIf="priceSummary" class="car-configurator-summary table">
-                <tr>
-                    <td>
-                        <h5>Basis-Model:</h5>
-                        {{ configuration.model.name }}
-                    </td>
-                    <td class="price text-right">{{ priceSummary.priceBase | number: '1.2' }} €</td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <h6>Optionen:</h6>
-                        <table class="table">
-                            <tr *ngFor="let option of configuration.availableOptions">
-                                <td>
-                                    <h6>{{ option.name}}</h6>
-                                    {{ configuration.selectedOptionProducts[option.id].name }}
-                                </td>
-                                <td class="price text-right">
-                                    {{ configuration.selectedOptionProducts[option.id].price | number: '1.2' }} €
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr class="total-price">
-                    <td>Gesamt-Preis:</td>
-                    <td class="price text-right">{{ priceSummary.priceTotal | number: '1.2' }} €</td>
-                </tr>
-            </table>
+                <table *ngIf="priceSummary" class="car-configurator-summary table">
+                    <tr>
+                        <td>
+                            <h5>Basis-Modell:</h5>
+                            {{ configuration.model.name }}
+                        </td>
+                        <td class="price text-right">{{ priceSummary.priceBase | number: '1.2' }} €</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <h6>Optionen:</h6>
+                            <table class="table">
+                                <tr *ngFor="let option of configuration.availableOptions">
+                                    <td>
+                                        <h6>{{ option.name}}</h6>
+                                        {{ configuration.selectedOptionProducts[option.id].name }}
+                                    </td>
+                                    <td class="price text-right">
+                                        {{ configuration.selectedOptionProducts[option.id].price | number: '1.2' }} €
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="total-price">
+                        <td>Gesamt-Preis:</td>
+                        <td class="price text-right">{{ priceSummary.priceTotal | number: '1.2' }} €</td>
+                    </tr>
+                </table>
+
+
+                <button type="button" class="btn btn-success" (click)="orderCar($event)">Kostenpflichtig bestellen</button>
+
+                <button type="button" class="btn btn-primary float-right" (click)="shareLink($event)">Link teilen</button>
+            </ng-container>
 
         </div>
         <div class="col-lg-4 col md-6">

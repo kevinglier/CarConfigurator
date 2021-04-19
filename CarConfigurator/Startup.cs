@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices.ComTypes;
 using CarConfigurator.BL.Interfaces;
-using CarConfigurator.BL.Providers;
+using CarConfigurator.BL.Services;
 using CarConfigurator.DL.Repositories;
 using CarConfigurator.DL.Repositories.Interfaces;
 using CarConfigurator.Pages;
@@ -36,13 +36,16 @@ namespace CarConfigurator
             services.AddSingleton<IProductOptionRepository>(_ =>
                 new ProductOptionRepository(Configuration.GetConnectionString("CarConfigurator")));
             services.AddSingleton<ICarConfigUserConfigurationRepository>(_ =>
-                    new CarConfigUserConfigurationRepository(Configuration.GetConnectionString("CarConfigurator")));
+                new CarConfigUserConfigurationRepository(Configuration.GetConnectionString("CarConfigurator")));
+            services.AddSingleton<IOrderRepository>(_ =>
+                new OrderRepository(Configuration.GetConnectionString("CarConfigurator")));
 
             // Providers
-            services.AddSingleton<ICarModelProvider, CarModelProvider>();
-            services.AddSingleton<ICarModelOptionProvider, CarModelOptionProvider>();
-            services.AddSingleton<ICarConfiguratorProvider, CarConfiguratorProvider>();
-            services.AddSingleton<ICarConfiguratorProvider, CarConfiguratorProvider>();
+            services.AddSingleton<ICarModelService, CarModelService>();
+            services.AddSingleton<ICarModelOptionService, CarModelOptionService>();
+            services.AddSingleton<ICarConfiguratorService, CarConfiguratorService>();
+            services.AddSingleton<ICarConfiguratorService, CarConfiguratorService>();
+            services.AddSingleton<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

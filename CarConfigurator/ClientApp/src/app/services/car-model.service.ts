@@ -1,31 +1,29 @@
-import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CarModel } from '../models/CarModel';
 import { CarModelOption } from '../models/CarModelOption';
 import { RestService } from './rest.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CarModelService {
-  
-  constructor(
-    @Inject('BASE_URL') private _baseUrl: string,
-    private _restService: RestService
-  ) {
-  }
 
-  public getModelByName(ean: string): Observable<CarModel> {
-    return this._restService.get<CarModel>('carmodel/{ean}', { ean: ean });
-  }
+    constructor(
+        private _restService: RestService
+    ) {
+    }
 
-  public getModelList(): Observable<CarModel[]> {
-    return this._restService.get<CarModel[]>('carmodel/list');
-  }
+    getModelByName(name: string): Observable<CarModel> {
+        return this._restService.get<CarModel>('carmodel/{name}', { name: name });
+    }
 
-  public getModelOptions(carModel: CarModel): Observable<CarModelOption[]> {
+    getModelList(): Observable<CarModel[]> {
+        return this._restService.get<CarModel[]>('carmodel/list');
+    }
 
-    return this._restService.get<CarModelOption[]>('carmodel/{ean}/option/list', { ean: carModel.ean });
-  }
+    getModelOptions(carModel: CarModel): Observable<CarModelOption[]> {
+
+        return this._restService.get<CarModelOption[]>('carmodel/{name}/option/list', { name: carModel.name });
+    }
 }

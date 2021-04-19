@@ -21,6 +21,13 @@ namespace CarConfigurator.DL.Repositories.Interfaces
         public Product GetByEAN(string ean);
 
         /// <summary>
+        /// Returns the Product by name (case insensitive)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Name of the product. Case insensitive.</returns>
+        Product GetByName(string name);
+
+        /// <summary>
         /// Returns the products which belong to a product option
         /// </summary>
         /// <param name="mainProduct"></param>

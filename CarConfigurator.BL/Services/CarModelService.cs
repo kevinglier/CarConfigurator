@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using CarConfigurator.BL.Interfaces;
 using CarConfigurator.BL.Models;
 using CarConfigurator.DL.Models;
 using CarConfigurator.DL.Repositories.Interfaces;
 
-namespace CarConfigurator.BL.Providers
+namespace CarConfigurator.BL.Services
 {
-    public class CarModelProvider : ICarModelProvider
+    public class CarModelService : ICarModelService
     {
         private readonly IProductRepository _productRepository;
 
-        public CarModelProvider(IProductRepository productRepository)
+        public CarModelService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
@@ -34,8 +32,24 @@ namespace CarConfigurator.BL.Providers
             return MapProductToCarModel(product);
         }
 
+        /// <inheritdoc />
+        public CarModel GetCarModelByName(string name)
+        {
+            var product = _productRepository.GetByName(name);
+
+            return MapProductToCarModel(product);
+        }
+
+        /// <summary>
+        /// Maps the database products to a car model product.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         private static CarModel MapProductToCarModel(Product product)
         {
+            if (product == null)
+                return null;
+
             var grossPrice = product.NetPrice * (1 + product.VATRate / 100);
 
             return new CarModel(product.EAN, product.Name, product.Description, grossPrice);

@@ -4,7 +4,7 @@ using CarConfigurator.DL.Models;
 
 namespace CarConfigurator.BL.Interfaces
 {
-    public interface ICarConfiguratorProvider
+    public interface ICarConfiguratorService
     {
         IEnumerable<CarModelOption> GetCarModelsOptionsAndProducts(CarModel carModel);
         CarConfiguratorSummary GetSummaryForSelectedOptionProducts(string carModelEAN, Dictionary<int, CarModelOptionProduct> selectedOptionProducts, string code = null);

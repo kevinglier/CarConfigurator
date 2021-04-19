@@ -24,6 +24,26 @@ namespace CarConfigurator.DL.Repositories
             return product;
         }
 
+        public Product GetByEAN(string ean)
+        {
+            const string sql = "SELECT * FROM Product WHERE EAN=@ean";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var product = connection.QuerySingleOrDefault<Product>(sql, new { ean });
+
+            return product;
+        }
+
+        public Product GetByName(string name)
+        {
+            const string sql = "SELECT * FROM Product WHERE Name LIKE @name";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var product = connection.QuerySingleOrDefault<Product>(sql, new { name });
+
+            return product;
+        }
+
         public IEnumerable<Product> GetOptionProducts(Product mainProduct, ProductOption productOption)
         {
             return this.GetOptionProducts(mainProduct.Id, productOption.Id);
@@ -65,16 +85,6 @@ namespace CarConfigurator.DL.Repositories
 
             using var connection = new SqlConnection(ConnectionString);
             var product = connection.Query<Product>(sql);
-
-            return product;
-        }
-
-        public Product GetByEAN(string ean)
-        {
-            const string sql = "SELECT * FROM Product WHERE EAN LIKE @ean";
-
-            using var connection = new SqlConnection(ConnectionString);
-            var product = connection.QuerySingleOrDefault<Product>(sql, new { ean});
 
             return product;
         }

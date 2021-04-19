@@ -1,4 +1,4 @@
 interface ILocalStorageItemCarConfiguratorSave {
-  carModelEAN: string;
-  code: string;
+    carModelEAN: string;
+    code: string;
 }

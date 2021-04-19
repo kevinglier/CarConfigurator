@@ -39,13 +39,7 @@ export class CarModelOptionsComponent implements OnInit {
         return this._value;
     }
 
-    constructor() {
-
-    }
-
     ngOnInit(): void {
-
-        console.log(this.value, this.availableOptions);
         this.initialized = true;
     }
 

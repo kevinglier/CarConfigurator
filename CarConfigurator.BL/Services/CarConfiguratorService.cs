@@ -1,41 +1,37 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Xml.Linq;
 using CarConfigurator.BL.Interfaces;
 using CarConfigurator.BL.Models;
 using CarConfigurator.DL.Models;
 using CarConfigurator.DL.Repositories.Interfaces;
 
-namespace CarConfigurator.BL.Providers
+namespace CarConfigurator.BL.Services
 {
-    public class CarConfiguratorProvider : ICarConfiguratorProvider
+    public class CarConfiguratorService : ICarConfiguratorService
     {
-        private readonly ICarModelProvider _carModelProvider;
-        private readonly ICarModelOptionProvider _carModelOptionProvider;
+        private readonly ICarModelService _carModelService;
+        private readonly ICarModelOptionService _carModelOptionService;
         private readonly IProductRepository _productRepository;
         private readonly IProductOptionRepository _productOptionRepository;
         private readonly ICarConfigUserConfigurationRepository _carConfigUserConfigurationRepository;
 
-        public CarConfiguratorProvider(
-            ICarModelProvider carModelProvider,
-            ICarModelOptionProvider carModelOptionProvider,
+        public CarConfiguratorService(
+            ICarModelService carModelService,
+            ICarModelOptionService carModelOptionService,
             IProductRepository productRepository,
             IProductOptionRepository productOptionRepository,
             ICarConfigUserConfigurationRepository carConfigUserConfigurationRepository)
         {
-            _carModelProvider = carModelProvider;
-            _carModelOptionProvider = carModelOptionProvider;
+            _carModelService = carModelService;
+            _carModelOptionService = carModelOptionService;
             _productRepository = productRepository;
             _productOptionRepository = productOptionRepository;
             _carConfigUserConfigurationRepository = carConfigUserConfigurationRepository;
         }
 
         /// <summary>
-        /// Gibt die Modell-Optionen sowie deren Produkte zurück
+        /// Return the car models options and their selectable products.
         /// </summary>
         /// <param name="carModel"></param>
         /// <returns></returns>
@@ -52,8 +48,8 @@ namespace CarConfigurator.BL.Providers
             var options = this._productOptionRepository.GetProductOptionsByEAN(carModel.EAN);
 
             var carModelOptions = new List<CarModelOption>();
-
-            // Produkte zu den Optionen auslesen und an das CarModelOption-Object anhängen
+            
+            // Read the products of the options and add them to the car model option.
             foreach (var option in options)
             {
                 var optionProducts = this.GetCarModelsOptionProducts(carModelProduct.Id, option.Id);
@@ -64,6 +60,12 @@ namespace CarConfigurator.BL.Providers
             return carModelOptions;
         }
 
+        /// <summary>
+        /// Returns a list of products that belong to the given group.
+        /// </summary>
+        /// <param name="carModelProductId"></param>
+        /// <param name="optionId"></param>
+        /// <returns></returns>
         public IEnumerable<CarModelOptionProduct> GetCarModelsOptionProducts(int carModelProductId, int optionId)
         {
             var option = _productOptionRepository.GetById(optionId, carModelProductId);
@@ -87,14 +89,16 @@ namespace CarConfigurator.BL.Providers
             return products;
         }
 
+        /// <summary>
+        /// Returns a user configuration that has previously been saved by the given code.
+        /// </summary>
+        /// <param name="code">The code of the saved configuration</param>
+        /// <returns></returns>
         public Dictionary<int, CarModelOptionProduct> GetSavedUserConfiguration(string code)
         {
             var userConfiguration = _carConfigUserConfigurationRepository.Get(code);
             if (userConfiguration == null)
                 throw new Exception("The code is unknown.");
-
-            var model = _carModelProvider.GetCarModelByEAN(userConfiguration.ModelEAN);
-            var optionsAndGroups = _carModelOptionProvider.GetListForModel(model);
 
             var selectedProducts = new Dictionary<int, CarModelOptionProduct>();
             foreach (var userProduct in userConfiguration.Products)
@@ -109,6 +113,11 @@ namespace CarConfigurator.BL.Providers
             return selectedProducts;
         }
 
+        /// <summary>
+        /// Save a user car model configuration.
+        /// </summary>
+        /// <param name="summary"></param>
+        /// <returns></returns>
         private CarConfigUserConfiguration SaveConfiguration(CarConfiguratorSummary summary)
         {
             var carModelProduct = _productRepository.GetByEAN(summary.SelectedModelEAN);
@@ -148,11 +157,18 @@ namespace CarConfigurator.BL.Providers
             return userConfiguration;
         }
 
+        /// <summary>
+        /// Returns the summary of the current configuration for a list of selected option products.
+        /// </summary>
+        /// <param name="carModelEAN"></param>
+        /// <param name="selectedOptionProducts"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public CarConfiguratorSummary GetSummaryForSelectedOptionProducts(string carModelEAN,
             Dictionary<int, CarModelOptionProduct> selectedOptionProducts, string code = null)
         {
             if (carModelEAN == null)
-                throw new Exception("Car model ean missing.");
+                throw new Exception("Car model EAN is missing.");
 
             if (selectedOptionProducts == null || selectedOptionProducts.Count == 0)
                 throw new Exception("Selected car model option products missing.");
@@ -170,9 +186,7 @@ namespace CarConfigurator.BL.Providers
 
             foreach (var availableOption in modelAvailableOptions)
             {
-                string selectedEAN;
-
-                selectedEAN = selectedOptionProducts[availableOption.Id] != null
+                var selectedEAN = selectedOptionProducts[availableOption.Id] != null
                     ? selectedOptionProducts[availableOption.Id].EAN
                     : _productRepository.GetProductsByIds(availableOption.DefaultProductIds).Select(x => x.EAN)
                         .FirstOrDefault();
