@@ -30,18 +30,18 @@ namespace CarConfigurator.Controllers
             _carConfiguratorProvider = carConfiguratorProvider;
         }
 
-        [HttpPost("pricesummary")]
-        public IActionResult GetPriceSummaryForUserOptionProductSelection(CarModelOptionSelectionRequest carModelOptionSelectionRequest)
+        [HttpPost("summary")]
+        public IActionResult GetSummaryForUserOptionProductSelection(CarModelOptionSelectionRequest carModelOptionSelectionRequest)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new ApiBadRequestResponse(ModelState));
 
-            CarConfiguratorPriceSummary priceSummary;
+            CarConfiguratorSummary priceSummary;
             try
             {
-                priceSummary = _carConfiguratorProvider.GetSummaryForSelectedOptionProducts(carModelOptionSelectionRequest.CarModelEAN, carModelOptionSelectionRequest.OptionProducts);
+                priceSummary = _carConfiguratorProvider.GetSummaryForSelectedOptionProducts(carModelOptionSelectionRequest.CarModelEAN, carModelOptionSelectionRequest.OptionProducts, carModelOptionSelectionRequest.Code);
             }
-            catch(Exception)
+            catch(Exception e)
             {
                 return BadRequest(new ApiResponse(400, "The configuration is invalid."));
             }
@@ -50,6 +50,17 @@ namespace CarConfigurator.Controllers
                 return BadRequest(new ApiResponse(400, "The summary couldn't be created."));
 
             return Ok(new ApiOkResponse(priceSummary));
+        }
+
+        [HttpGet("savedconfiguration/{code}")]
+        public IActionResult GetSavedConfiguration(string code)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new ApiBadRequestResponse(ModelState));
+
+            var configuration = _carConfiguratorProvider.GetSavedUserConfiguration(code);
+
+            return Ok(new ApiOkResponse(configuration));
         }
     }
 }

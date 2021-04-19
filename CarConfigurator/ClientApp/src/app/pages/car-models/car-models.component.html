@@ -1,12 +1,13 @@
 <div class="container">
   <h1>Unsere Modelle</h1>
 
-  <p>Hier findest du das passende Auto.</p>
+  <p>Hier findest Du unsere neuesten Modelle. Wähle eines aus, um eine passende Konfiguration zu wählen.</p>
 
   <div class="row">
     <div *ngFor="let carModel of carModels" class="col-md-6">
       <div class="card">
         <div class="card-body">
+
           <a class="stretched-link" [routerLink]="['/configure', carModel.ean]">
             <h5 class="card-title">{{ carModel.name }}</h5>
           </a>

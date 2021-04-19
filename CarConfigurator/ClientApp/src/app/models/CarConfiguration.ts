@@ -26,7 +26,7 @@ export class CarConfiguration {
     this._model = model;
 
     selectedOptionProducts = selectedOptionProducts ? selectedOptionProducts : {};
-
+    console.log('ABC:', selectedOptionProducts);
     const ids = this._availableOptions.map(x => x.id);
     for (let id of ids) {
 

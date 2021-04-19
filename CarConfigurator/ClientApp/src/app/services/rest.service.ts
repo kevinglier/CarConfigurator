@@ -37,8 +37,8 @@ export class RestService {
    * @param endpoint
    * @param payload
    */
-  post<T>(endpoint: string, payload: any): Observable<T> {
-    const url = this.getCompleteEndpointUrl(endpoint);
+  post<T>(endpoint: string, payload: any, parameters: { [key: string]: any } = null): Observable<T> {
+    const url = this.getCompleteEndpointUrl(endpoint, parameters);
 
     return Observable.create((observer: Observer<T>) => {
       this._httpClient.post<T>(url, payload)

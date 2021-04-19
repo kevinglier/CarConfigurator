@@ -66,7 +66,7 @@ export class CarConfiguratorComponent implements OnDestroy, OnInit, AfterViewIni
       const ean = params.get('model');
 
       // Abruf genereller Konfigurator-Struktur
-      this._configuratorService.getNewConfigurationForModel(ean).subscribe(
+      this._configuratorService.getConfigurationForModel(ean).subscribe(
         result => {
           // Bei Fehler zurück zur Startseite
           if (!result)

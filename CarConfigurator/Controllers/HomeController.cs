@@ -23,7 +23,7 @@ namespace CarConfigurator.Controllers
 
         public IActionResult Index()
         {
-            var product = _productRepository.GetProduct(1);
+            var product = _productRepository.GetById(1);
 
             var content = new ContentResult();
             content.Content = product.Name;

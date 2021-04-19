@@ -1,7 +1,9 @@
+using System.Runtime.InteropServices.ComTypes;
 using CarConfigurator.BL.Interfaces;
 using CarConfigurator.BL.Providers;
 using CarConfigurator.DL.Repositories;
 using CarConfigurator.DL.Repositories.Interfaces;
+using CarConfigurator.Pages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,18 +28,20 @@ namespace CarConfigurator
         {
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
             // Repositories
-            services.AddSingleton<IProductRepository>(x => new ProductRepository(Configuration.GetConnectionString("CarConfigurator")));
-            services.AddSingleton<IProductOptionRepository>(x => new ProductOptionRepository(Configuration.GetConnectionString("CarConfigurator")));
+            services.AddSingleton<IProductRepository>(_ =>
+                new ProductRepository(Configuration.GetConnectionString("CarConfigurator")));
+            services.AddSingleton<IProductOptionRepository>(_ =>
+                new ProductOptionRepository(Configuration.GetConnectionString("CarConfigurator")));
+            services.AddSingleton<ICarConfigUserConfigurationRepository>(_ =>
+                    new CarConfigUserConfigurationRepository(Configuration.GetConnectionString("CarConfigurator")));
 
             // Providers
             services.AddSingleton<ICarModelProvider, CarModelProvider>();
             services.AddSingleton<ICarModelOptionProvider, CarModelOptionProvider>();
+            services.AddSingleton<ICarConfiguratorProvider, CarConfiguratorProvider>();
             services.AddSingleton<ICarConfiguratorProvider, CarConfiguratorProvider>();
         }
 
