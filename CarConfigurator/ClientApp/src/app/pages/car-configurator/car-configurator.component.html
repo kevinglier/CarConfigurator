@@ -1,107 +1,79 @@
 <div class="container">
 
-  <h1>Konfigurator</h1>
+    <h1>Konfigurator</h1>
 
-  <div *ngIf="configuration" class="row flex-column-reverse flex-md-row">
-    <div class="col-lg-8 col md-6">
-      <h3>{{configuration.model.name}}</h3>
-      <p>{{configuration.model.description}}</p>
-    </div>
-    <div class="col-lg-4 col md-6">
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Ihre Konfiguration:</h5>
-          <div *ngIf="!priceSummary">Laden...</div>
-          <div *ngIf="priceSummary">
-            <table>
-              <tr>
-                <td>Basispreis:</td>
-                <td>{{ priceSummary.priceBase | number: '1.2' }} €</td>
-              </tr>
-              <tr>
-                <td>Optionen:</td>
-                <td>{{ priceSummary.priceOptions | number: '1.2' }} €</td>
-              </tr>
-              <tr>
-                <th class="align-text-bottom carconfigurator-price">Gesamtpreis:</th>
-                <td class="carconfigurator-price carconfigurator-price--total">{{ priceSummary.priceTotal | number: '1.2' }} €</td>
-              </tr>
-            </table>
-          </div>
+    <div *ngIf="configuration" class="row flex-column-reverse flex-md-row">
+        <div class="col-lg-8 col md-6">
+            <h3>{{configuration.model.name}}</h3>
+            <p>{{configuration.model.description}}</p>
         </div>
-      </div>
+        <div class="col-lg-4 col md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Ihre Konfiguration:</h5>
+                    <div *ngIf="!priceSummary">Laden...</div>
+                    <div *ngIf="priceSummary">
+                        <table>
+                            <tr>
+                                <td>Basispreis:</td>
+                                <td>{{ priceSummary.priceBase | number: '1.2' }} €</td>
+                            </tr>
+                            <tr>
+                                <td>Optionen:</td>
+                                <td>{{ priceSummary.priceOptions | number: '1.2' }} €</td>
+                            </tr>
+                            <tr>
+                                <th class="align-text-bottom carconfigurator-price">Gesamtpreis:</th>
+                                <td class="carconfigurator-price carconfigurator-price--total">{{ priceSummary.priceTotal | number: '1.2' }} €</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-    </div>
-  </div>
-
-  <div *ngIf="configuration" class="row flex-column-reverse flex-md-row">
-    <div class="col-lg-8 col md-6">
-
-
-
-      <h4>Ihre Auswahl</h4>
-
-      <table *ngIf="priceSummary" class="car-configurator-summary table">
-        <tr>
-          <td>
-            <h5>Basis-Model:</h5>
-            {{ configuration.model.name }}
-          </td>
-          <td class="price text-right">{{ priceSummary.priceBase | number: '1.2' }} €</td>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <h6>Optionen:</h6>
-            <table class="table">
-              <tr *ngFor="let option of configuration.availableOptions">
-                <td>
-                  <h6>{{ option.name}}</h6>
-                  {{ configuration.selectedOptionProducts[option.id].name }}
-                </td>
-                <td class="price text-right">
-                  {{ configuration.selectedOptionProducts[option.id].price | number: '1.2' }} €
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr class="total-price">
-          <td>Gesamt-Preis:</td>
-          <td class="price text-right">{{ priceSummary.priceTotal | number: '1.2' }} €</td>
-        </tr>
-      </table>
-
-    </div>
-    <div class="col-lg-4 col md-6">
-
-      <form #configurationForm="ngForm">
-        <div class="card mb-4">
-          <div class="card-body" *ngIf="!configuration.availableOptions">Laden...</div>
-          <ul *ngIf="configuration.availableOptions" class="list-group list-group-flush">
-            <li *ngFor="let option of configuration.availableOptions" class="list-group-item">
-              <h6>
-                <label for="name">{{ option.name }}:</label>
-              </h6>
-              <!--<input type="text" class="form-control" id="name" required [(ngModel)]="configuration.selectedOptionProducts[option.id].value" name="carconfiguration_option_{{option.id}}">-->
-              <select class="form-control" id="carConfigurationOption{{option.id}}"
-                      required
-                      [ngModel]="configuration.selectedOptionProducts[option.id]" (ngModelChange)="setSelectedOptionProduct($event, option)" name="carconfiguration_option_{{option.id}}">
-                <option *ngFor="let optionProduct of getProductsForOption(option.id)" [ngValue]="optionProduct">
-                  {{optionProduct.name}}
-                  <ng-template [ngIf]="configuration.selectedOptionProducts[option.id] != optionProduct">
-                    ({{getPriceChangeForOptionProduct(option.id, optionProduct) > 0 ? '+' : ''}}{{ getPriceChangeForOptionProduct(option.id, optionProduct) | number : '1.2' }} €)
-                  </ng-template>
-                </option>
-              </select>
-
-              <div class="carconfigurator-price">
-                Preis: {{ getPriceForSelectedOption(option.id) === null ? '-' : (getPriceForSelectedOption(option.id) > 0 ? '+' : '') + (getPriceForSelectedOption(option.id) | number : '1.2' ) + ' €' }}
-              </div>
-            </li>
-          </ul>
         </div>
-      </form>
-
     </div>
-  </div>
+
+    <div *ngIf="configuration" class="row flex-column-reverse flex-md-row">
+        <div class="col-lg-8 col md-6">
+
+            <h4>Ihre Auswahl</h4>
+
+            <table *ngIf="priceSummary" class="car-configurator-summary table">
+                <tr>
+                    <td>
+                        <h5>Basis-Model:</h5>
+                        {{ configuration.model.name }}
+                    </td>
+                    <td class="price text-right">{{ priceSummary.priceBase | number: '1.2' }} €</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <h6>Optionen:</h6>
+                        <table class="table">
+                            <tr *ngFor="let option of configuration.availableOptions">
+                                <td>
+                                    <h6>{{ option.name}}</h6>
+                                    {{ configuration.selectedOptionProducts[option.id].name }}
+                                </td>
+                                <td class="price text-right">
+                                    {{ configuration.selectedOptionProducts[option.id].price | number: '1.2' }} €
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="total-price">
+                    <td>Gesamt-Preis:</td>
+                    <td class="price text-right">{{ priceSummary.priceTotal | number: '1.2' }} €</td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="col-lg-4 col md-6">
+
+            <car-model-options [availableOptions]="configuration.availableOptions" [value]="configuration.selectedOptionProducts" (valueChange)="configurationChanged($event)"></car-model-options>
+
+        </div>
+    </div>
 </div>

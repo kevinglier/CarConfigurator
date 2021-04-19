@@ -10,8 +10,9 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { CarModelsComponent } from "./pages/car-models/car-models.component";
-import { CarConfiguratorComponent } from "./pages/car-configurator/car-configurator.component";
+import { CarConfiguratorComponent } from './pages/car-configurator/car-configurator.component';
+import { CarModelsComponent } from './pages/car-models/car-models.component';
+import { CarModelOptionsComponent } from './components/car-configurator/car-model-options.component';
 
 registerLocaleData(localeDe, 'de');
 
@@ -22,7 +23,8 @@ registerLocaleData(localeDe, 'de');
     HomeComponent,
     CarModelsComponent,
     CarConfiguratorComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    CarModelOptionsComponent
   ],
   providers: [
     {

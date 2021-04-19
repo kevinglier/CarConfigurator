@@ -14,14 +14,24 @@ namespace CarConfigurator.BL.Providers
 {
     public class CarConfiguratorProvider : ICarConfiguratorProvider
     {
+        private readonly ICarModelProvider _carModelProvider;
+        private readonly ICarModelOptionProvider _carModelOptionProvider;
         private readonly IProductRepository _productRepository;
         private readonly IProductOptionRepository _productOptionRepository;
+        private readonly ICarConfigUserConfigurationRepository _carConfigUserConfigurationRepository;
 
-        public CarConfiguratorProvider(IProductRepository productRepository,
-            IProductOptionRepository productOptionRepository)
+        public CarConfiguratorProvider(
+            ICarModelProvider carModelProvider,
+            ICarModelOptionProvider carModelOptionProvider,
+            IProductRepository productRepository,
+            IProductOptionRepository productOptionRepository,
+            ICarConfigUserConfigurationRepository carConfigUserConfigurationRepository)
         {
+            _carModelProvider = carModelProvider;
+            _carModelOptionProvider = carModelOptionProvider;
             _productRepository = productRepository;
             _productOptionRepository = productOptionRepository;
+            _carConfigUserConfigurationRepository = carConfigUserConfigurationRepository;
         }
 
         /// <summary>
@@ -77,16 +87,75 @@ namespace CarConfigurator.BL.Providers
             return products;
         }
 
-        public CarConfiguratorPriceSummary SaveConfiguration(string code = null)
+        public Dictionary<int, CarModelOptionProduct> GetSavedUserConfiguration(string code)
         {
-            throw new NotImplementedException();
+            var userConfiguration = _carConfigUserConfigurationRepository.Get(code);
+            if (userConfiguration == null)
+                throw new Exception("The code is unknown.");
+
+            var model = _carModelProvider.GetCarModelByEAN(userConfiguration.ModelEAN);
+            var optionsAndGroups = _carModelOptionProvider.GetListForModel(model);
+
+            var selectedProducts = new Dictionary<int, CarModelOptionProduct>();
+            foreach (var userProduct in userConfiguration.Products)
+            {
+                var product = _productRepository.GetById(userProduct.SelectedOptionProductId);
+
+                selectedProducts.Add(userProduct.OptionId, new CarModelOptionProduct(
+                    product.EAN, product.Name, product.Description, product.NetPrice * (1 / product.VATRate), false)
+                );
+            }
+
+            return selectedProducts;
         }
 
-        public CarConfiguratorPriceSummary GetSummaryForSelectedOptionProducts(string carModelEAN,
-            Dictionary<int, CarModelOptionProduct> selectedOptionProducts)
+        private CarConfigUserConfiguration SaveConfiguration(CarConfiguratorSummary summary)
         {
-            if (selectedOptionProducts == null || selectedOptionProducts.Count == 0 || carModelEAN == null)
-                return null;
+            var carModelProduct = _productRepository.GetByEAN(summary.SelectedModelEAN);
+
+            if (carModelProduct == null || carModelProduct.IsOptionProduct)
+                throw new Exception("Unknown car model.");
+
+            var configurationProducts = summary.SelectedOptionProducts.Select(keyValuePair =>
+            {
+                var optionId = keyValuePair.Key;
+                var selectedProduct = keyValuePair.Value;
+
+                var product = _productRepository.GetByEAN(selectedProduct.EAN);
+                return new CarConfigUserConfigurationProduct(carModelProduct.Id, optionId, product.Id);
+            }).ToList();
+
+            CarConfigUserConfiguration userConfiguration;
+            if (summary.Code != null)
+            {
+                userConfiguration = _carConfigUserConfigurationRepository.Get(summary.Code);
+                userConfiguration.Products = configurationProducts;
+
+                userConfiguration = _carConfigUserConfigurationRepository.Update(userConfiguration);
+
+                return userConfiguration;
+            }
+
+            var code = Guid.NewGuid().ToString("N");
+
+            userConfiguration = new CarConfigUserConfiguration(
+                carModelProduct.EAN,
+                configurationProducts
+            );
+
+            userConfiguration = _carConfigUserConfigurationRepository.Add(userConfiguration, code);
+
+            return userConfiguration;
+        }
+
+        public CarConfiguratorSummary GetSummaryForSelectedOptionProducts(string carModelEAN,
+            Dictionary<int, CarModelOptionProduct> selectedOptionProducts, string code = null)
+        {
+            if (carModelEAN == null)
+                throw new Exception("Car model ean missing.");
+
+            if (selectedOptionProducts == null || selectedOptionProducts.Count == 0)
+                throw new Exception("Selected car model option products missing.");
 
             var carModelProduct = _productRepository.GetByEAN(carModelEAN);
             if (carModelProduct == null)
@@ -101,38 +170,48 @@ namespace CarConfigurator.BL.Providers
 
             foreach (var availableOption in modelAvailableOptions)
             {
-                if (selectedOptionProducts[availableOption.Id] != null)
-                {
-                    var selectedEAN = selectedOptionProducts[availableOption.Id].EAN;
-                    var userSelectedProduct = _productRepository.GetByEAN(selectedEAN);
-                    if (userSelectedProduct == null)
-                        throw new Exception("Unknown product with EAN " + selectedEAN + ".");
+                string selectedEAN;
 
-                    var availableProductsForOptions =
-                        GetCarModelsOptionProducts(carModelProduct.Id, availableOption.Id);
-                       // _productRepository.GetOptionProducts(carModelProduct.Id, availableOption.Id);
+                selectedEAN = selectedOptionProducts[availableOption.Id] != null
+                    ? selectedOptionProducts[availableOption.Id].EAN
+                    : _productRepository.GetProductsByIds(availableOption.DefaultProductIds).Select(x => x.EAN)
+                        .FirstOrDefault();
 
-                    
-                    var userSelectedOptionProduct =
-                        availableProductsForOptions.FirstOrDefault(prod => prod.EAN == selectedEAN);
+                var userSelectedProduct = _productRepository.GetByEAN(selectedEAN);
+                if (userSelectedProduct == null)
+                    throw new Exception("Unknown product with EAN " + selectedEAN + ".");
 
-                    // If the product is not an product of the group for the car model
-                    if (userSelectedOptionProduct == null)
-                        continue;
+                var availableProductsForOptions =
+                    GetCarModelsOptionProducts(carModelProduct.Id, availableOption.Id);
+                // _productRepository.GetOptionProducts(carModelProduct.Id, availableOption.Id);
 
-                    // If it is a default product, the product price is included in the car's base price
-                    if (availableOption.DefaultProductIds.Contains(userSelectedProduct.Id))
-                        continue;
 
-                    optionsPrice += userSelectedProduct.NetPrice * (1 + userSelectedProduct.VATRate / 100);
+                var userSelectedOptionProduct =
+                    availableProductsForOptions.FirstOrDefault(prod => prod.EAN == selectedEAN);
 
-                    validatedSelectedOptionProducts.Add(availableOption.Id, userSelectedOptionProduct);
-                }
+                // If the product is not an product of the group for the car model
+                if (userSelectedOptionProduct == null)
+                    continue;
+
+
+                validatedSelectedOptionProducts.Add(availableOption.Id, userSelectedOptionProduct);
+
+                // If it is a default product, the product price is included in the car's base price
+                if (availableOption.DefaultProductIds.Contains(userSelectedProduct.Id))
+                    continue;
+
+                optionsPrice += userSelectedProduct.NetPrice * (1 + userSelectedProduct.VATRate / 100);
             }
 
             var totalPrice = basePrice + optionsPrice;
 
-            var summary = new CarConfiguratorPriceSummary(basePrice, totalPrice, optionsPrice, validatedSelectedOptionProducts);
+            var summary =
+                new CarConfiguratorSummary(code, basePrice, totalPrice, optionsPrice, carModelEAN,
+                    validatedSelectedOptionProducts);
+
+            var userConfiguration = SaveConfiguration(summary);
+
+            summary.Code = userConfiguration.Code;
 
             return summary;
         }

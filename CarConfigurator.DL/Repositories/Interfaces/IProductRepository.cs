@@ -5,7 +5,7 @@ namespace CarConfigurator.DL.Repositories.Interfaces
 {
     public interface IProductRepository : IRepository
     {
-        public Product GetProduct(int id);
+        public Product GetById(int id);
 
         /// <summary>
         /// Returns all main products (which doesn't belong to a product option)
@@ -35,5 +35,7 @@ namespace CarConfigurator.DL.Repositories.Interfaces
         /// <param name="productOptionId"></param>
         /// <returns></returns>
         IEnumerable<Product> GetOptionProducts(int mainProductId, int productOptionId);
+
+        IEnumerable<Product> GetProductsByIds(IEnumerable<int> ids);
     }
 }

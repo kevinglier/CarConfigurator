@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using CarConfigurator.DL.Models;
 using CarConfigurator.DL.Repositories.Base;
 using CarConfigurator.DL.Repositories.Interfaces;
@@ -13,7 +14,7 @@ namespace CarConfigurator.DL.Repositories
         {
         }
 
-        public Product GetProduct(int id)
+        public Product GetById(int id)
         {
             const string sql = "SELECT * FROM Product WHERE Id = @id;";
 
@@ -40,9 +41,22 @@ namespace CarConfigurator.DL.Repositories
 	                 WHERE po.Id = @productOptionId AND po_p.ProductId = @mainProductId )";
 
             using var connection = new SqlConnection(ConnectionString);
-            var product = connection.Query<Product>(sql, new { productOptionId, mainProductId });
+            var products = connection.Query<Product>(sql, new { productOptionId, mainProductId });
 
-            return product;
+            return products;
+        }
+
+        public IEnumerable<Product> GetProductsByIds(IEnumerable<int> ids)
+        {
+            const string sql = @"
+                SELECT *
+                  FROM Product
+                 WHERE Id IN (@ids)";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var products = connection.Query<Product>(sql, new { ids });
+
+            return products;
         }
 
         public IEnumerable<Product> GetMainProducts()

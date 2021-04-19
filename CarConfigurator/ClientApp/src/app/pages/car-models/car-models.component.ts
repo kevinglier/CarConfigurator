@@ -6,7 +6,7 @@ import { CarModel } from '../../models/CarModel';
   selector: 'app-car-models-component',
   templateUrl: './car-models.component.html'
 })
-export class CarModelsComponent implements OnInit {
+export class CarModelsComponent  implements OnInit {
 
   public carModels: CarModel[];
 

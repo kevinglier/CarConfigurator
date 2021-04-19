@@ -1,0 +1,27 @@
+<form *ngIf="initialized" #form="ngForm">
+  <div class="card mb-4">
+    <div class="card-body" *ngIf="!availableOptions">Laden...</div>
+    <ul *ngIf="availableOptions" class="list-group list-group-flush">
+      <li *ngFor="let option of availableOptions" class="list-group-item">
+        <h6>
+          <label for="name">{{ option.name }}:</label>
+        </h6>
+        <!--<input type="text" class="form-control" id="name" required [(ngModel)]="configuration.selectedOptionProducts[option.id].value" name="carconfiguration_option_{{option.id}}">-->
+        <select class="form-control" id="carConfigurationOption{{option.id}}"
+                required
+                [ngModel]="value[option.id]" (ngModelChange)="setSelectedOptionProduct($event, option)" name="carconfiguration_option_{{option.id}}">
+          <option *ngFor="let optionProduct of getProductsForOption(option.id)" [ngValue]="optionProduct">
+            {{optionProduct.name}}
+            <ng-template [ngIf]="value[option.id] != optionProduct">
+              ({{getPriceChangeForOptionProduct(option.id, optionProduct) > 0 ? '+' : ''}}{{ getPriceChangeForOptionProduct(option.id, optionProduct) | number : '1.2' }} €)
+            </ng-template>
+          </option>
+        </select>
+
+        <div class="carconfigurator-price">
+          Preis: {{ getPriceForSelectedOption(option.id) === null ? '-' : (getPriceForSelectedOption(option.id) > 0 ? '+' : '') + (getPriceForSelectedOption(option.id) | number : '1.2' ) + ' €' }}
+        </div>
+      </li>
+    </ul>
+  </div>
+</form>
