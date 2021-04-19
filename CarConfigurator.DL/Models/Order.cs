@@ -10,6 +10,8 @@ namespace CarConfigurator.DL.Models
     {
         public int Id { get; }
         public string Code { get; }
+        public DateTime CreatedAt { get; }
+
         private readonly List<OrderPosition> _positions = new();
 
         public Order(string code)
@@ -17,10 +19,11 @@ namespace CarConfigurator.DL.Models
             Code = code;
         }
 
-        public Order(int id, string code)
+        public Order(int id, string code, DateTime createdAt)
         {
             Id = id;
             Code = code;
+            CreatedAt = createdAt;
         }
 
         public IEnumerable<OrderPosition> Positions => _positions;
