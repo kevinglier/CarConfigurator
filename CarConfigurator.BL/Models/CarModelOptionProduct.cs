@@ -2,16 +2,18 @@
 {
     public class CarModelOptionProduct : IProduct
     {
-        public int Id { get; }
+        public string EAN { get; }
         public string Name { get; }
         public string Description { get; }
+        public decimal Price { get; }
         public bool IsDefault { get; }
 
-        public CarModelOptionProduct(int id, string name, string description, bool isDefault)
+        public CarModelOptionProduct(string ean, string name, string description, decimal price, bool isDefault)
         {
-            Id = id;
+            EAN = ean;
             Name = name;
             Description = description;
+            Price = price;
             IsDefault = isDefault;
         }
     }

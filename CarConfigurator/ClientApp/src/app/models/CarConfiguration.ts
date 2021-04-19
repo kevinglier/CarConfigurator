@@ -30,18 +30,11 @@ export class CarConfiguration {
     const ids = this._availableOptions.map(x => x.id);
     for (let id of ids) {
 
-      const option = this._availableOptions.find(opt => opt.id == id);
+      const option = this._availableOptions.find(opt => opt.id === id);
+
       // Set currently unselected options to empty to reflect the number of available options.
       if (!selectedOptionProducts[id]) {
-
-        console.log('xx', option.products.find(prod => prod.isDefault));
-
         selectedOptionProducts[id] = option.products.find(prod => prod.isDefault);
-      } else {
-        
-        /*selectedOptionProducts[id] = this._availableOptions
-          .map(opt => opt.products)
-          .find((prod: CarModelOptionProduct) => prod.isDefault);*/
       }
     }
 

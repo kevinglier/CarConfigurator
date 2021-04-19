@@ -2,6 +2,9 @@
 
 /* Provide sufficient contrast against white background */
 
+html {
+  overflow-y: scroll;
+}
 
 code { color: #e01a76; }
 
@@ -35,5 +38,33 @@ main.content a:link,
 main.content a:active { color: #004a9d; }
 
 main.content {
-  padding-top: 15px;
+  padding-top: 65px;
+}
+
+th.carconfigurator-price {
+  padding-top: 11px;
+  padding-right: 5px;
+}
+
+  td.carconfigurator-price.carconfigurator-price--total {
+    font-size: 1.5em;
+  }
+
+
+.card {
+  background-color: #f7f7f7;
+}
+
+
+.car-configurator-summary price {
+  font-size: 1.5em;
+}
+
+.car-configurator-summary price.price--total {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.car-configurator-summary .total-price td {
+  font-weight: bold;
 }

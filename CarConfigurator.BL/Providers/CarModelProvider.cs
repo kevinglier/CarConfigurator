@@ -36,7 +36,9 @@ namespace CarConfigurator.BL.Providers
 
         private static CarModel MapProductToCarModel(Product product)
         {
-            return product != null ? new CarModel(product.EAN, product.Name, product.Description) : null;
+            var grossPrice = product.NetPrice * (1 + product.VATRate / 100);
+
+            return new CarModel(product.EAN, product.Name, product.Description, grossPrice);
         }
     }
 }

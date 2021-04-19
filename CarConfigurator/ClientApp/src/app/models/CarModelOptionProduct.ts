@@ -3,4 +3,5 @@ export class CarModelOptionProduct {
   name: string;
   description: string;
   isDefault: boolean;
+  price: number;
 }

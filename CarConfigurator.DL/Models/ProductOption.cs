@@ -16,6 +16,15 @@ namespace CarConfigurator.DL.Models
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ean">EAN des Haupt-Produktes</param>
+        /// <param name="productId">ID des Haupt-Produktes</param>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="defaultProductIds"></param>
         public ProductOption(int id, string ean, int productId, string name, string description, IEnumerable<int> defaultProductIds)
         {
             Id = id;

@@ -7,5 +7,6 @@ namespace CarConfigurator.DL.Repositories.Interfaces
     {
         public IEnumerable<ProductOption> GetProductOptions(int productId);
         public IEnumerable<ProductOption> GetProductOptionsByEAN(string ean);
+        public ProductOption GetById(int id, int mainProductId);
     }
 }

@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Observer } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +13,45 @@ export class RestService {
   ) {
   }
 
-  public get<T>(endpoint, parameters: { [key: string]: any } = null): Observable<T> {
+  /**
+   * Send a HTTP-GET Request
+   * @param endpoint
+   * @param parameters
+   */
+  get<T>(endpoint: string, parameters: { [key: string]: any } = null): Observable<T> {
+    const url = this.getCompleteEndpointUrl(endpoint, parameters);
 
-    console.log('GET ' + endpoint, parameters);
+    return Observable.create((observer: Observer<T>) => {
+      this._httpClient.get<T>(url)
+        .subscribe((response: any) => {
+          observer.next(response.result);
+          observer.complete();
+        }, error => {
+          observer.error(error);
+        });
+    });
+  }
+
+  /**
+   * Send a HTTP-POST Request
+   * @param endpoint
+   * @param payload
+   */
+  post<T>(endpoint: string, payload: any): Observable<T> {
+    const url = this.getCompleteEndpointUrl(endpoint);
+
+    return Observable.create((observer: Observer<T>) => {
+      this._httpClient.post<T>(url, payload)
+        .subscribe((response: any) => {
+          observer.next(response.result);
+          observer.complete();
+        }, error => {
+          observer.error(error);
+        });
+    });
+  }
+
+  private getCompleteEndpointUrl(endpoint, parameters?: { [key: string]: any }) {
 
     if (parameters) {
       for (let paramName in parameters) {
@@ -26,19 +61,8 @@ export class RestService {
       }
     }
 
-    console.log('GET ' + this._baseUrl + endpoint);
+    endpoint = this._baseUrl + endpoint;
 
-    return Observable.create((observer: Observer<T>) => {
-      this._httpClient.get<T>(this._baseUrl + endpoint)
-        .subscribe((response: any) => {
-          
-          observer.next(response.result);
-          observer.complete();
-        }, error => {
-            observer.error(error);
-        });
-    });
-
-    console.log('-----');
+    return endpoint;
   }
 }

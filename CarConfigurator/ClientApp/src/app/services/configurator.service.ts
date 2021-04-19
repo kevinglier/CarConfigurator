@@ -5,6 +5,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { CarConfiguration } from '../models/CarConfiguration';
 import { CarModel } from '../models/CarModel';
 import { CarModelOption } from '../models/CarModelOption';
+import { CarModelOptionProduct } from '../models/CarModelOptionProduct';
+import { RestService } from './rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ export class ConfiguratorService {
 
   constructor(
     @Inject('BASE_URL') private _baseUrl: string,
-    private _carModelService: CarModelService
+    private _carModelService: CarModelService,
+    private _restService: RestService
   ) {
   }
 
@@ -27,7 +30,6 @@ export class ConfiguratorService {
       (model: CarModel) => {
         return this._carModelService.getModelOptions(model).pipe(
           map((modelOptions: CarModelOption[]) => {
-            console.log(model, modelOptions);
             return new CarConfiguration(model, modelOptions);
           })
         );
@@ -44,5 +46,18 @@ export class ConfiguratorService {
 //    return new CarConfiguration(carModel);
 //  })
 //);
+  }
+
+  getPriceSummaryForSelectedCarOptionProducts(carModelEAN: string,
+      carModelOptionProduct: { [optionId: number]: CarModelOptionProduct }):
+    Observable<any> {
+
+    const payload = {
+      carModelEAN: carModelEAN,
+      optionProducts: carModelOptionProduct
+    };
+    return this._restService.post('carconfigurator/pricesummary', payload).pipe(map(result => {
+      return result;
+    }));
   }
 }

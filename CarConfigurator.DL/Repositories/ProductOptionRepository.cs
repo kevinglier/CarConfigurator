@@ -52,13 +52,24 @@ namespace CarConfigurator.DL.Repositories
 
             productOptions = productOptions.Select(productOption =>
             {
-
                 productOption.DefaultProductIds = GetDefaultProducts(productOption, mainProductId);
 
                 return productOption;
             });
 
             return productOptions;
+        }
+
+        public ProductOption GetById(int id, int mainProductId)
+        {
+            const string sql = "SELECT * FROM ProductOption WHERE Id = @id;";
+
+            using var connection = new SqlConnection(ConnectionString);
+            var productOption = connection.QuerySingleOrDefault<ProductOption>(sql, new { id });
+
+            productOption.DefaultProductIds = GetDefaultProducts(productOption, mainProductId);
+
+            return productOption;
         }
 
         private IEnumerable<int> GetDefaultProducts(ProductOption productOption, int mainProductId)
