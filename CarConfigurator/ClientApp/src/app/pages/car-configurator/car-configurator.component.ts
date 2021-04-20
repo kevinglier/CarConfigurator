@@ -42,12 +42,13 @@ export class CarConfiguratorComponent implements OnDestroy, OnInit, AfterViewIni
                     if (!result)
                         this._router.navigate(['/']);
 
-                    // Wenn ein Code angegeben wurde, redirecten wir auf URL ohne Code-Angabe
-                    this._router.navigate(['/configure/', UrlHelper.nameToUrlPart(name)]);
-
                     this.configuration = result;
+                    this.updateSummary(); // persists the code in localStorage
 
-                    this.updateSummary();
+                    // Wenn ein Code angegeben wurde, redirecten wir auf URL ohne Code-Angabe
+                    if (code)
+                        this._router.navigate(['/configure/', UrlHelper.nameToUrlPart(name)]);
+
                 },
                 error => {
                     // Bei Fehlern zurück zur Startseite

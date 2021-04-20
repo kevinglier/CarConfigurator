@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CarConfigurator.BL.Helpers;
 using CarConfigurator.BL.Interfaces;
 using CarConfigurator.BL.Models;
 using CarConfigurator.DL.Models;
@@ -78,7 +79,7 @@ namespace CarConfigurator.BL.Services
                     // Wenn es sich um ein Standard-Produkt handelt, ist der Preis im Preis des Fahrzeugs enthalten
                     var grossPrice = option.DefaultProductIds.Contains(optionProduct.Id)
                         ? 0
-                        : optionProduct.NetPrice * (1 + optionProduct.VATRate / 100);
+                        : PriceHelper.GetGrossPrice(optionProduct.NetPrice, optionProduct.VATRate);
 
                     return new CarModelOptionProduct(optionProduct.EAN, optionProduct.Name,
                         optionProduct.Description, grossPrice,
@@ -106,7 +107,7 @@ namespace CarConfigurator.BL.Services
                 var product = _productRepository.GetById(userProduct.SelectedOptionProductId);
 
                 selectedProducts.Add(userProduct.OptionId, new CarModelOptionProduct(
-                    product.EAN, product.Name, product.Description, product.NetPrice * (1 / product.VATRate), false)
+                    product.EAN, product.Name, product.Description, PriceHelper.GetGrossPrice(product.NetPrice, product.VATRate), false)
                 );
             }
 
@@ -177,7 +178,7 @@ namespace CarConfigurator.BL.Services
             if (carModelProduct == null)
                 throw new Exception("Unknown car model.");
 
-            decimal basePrice = carModelProduct.NetPrice * (1 + carModelProduct.VATRate / 100);
+            decimal basePrice = PriceHelper.GetGrossPrice(carModelProduct.NetPrice, carModelProduct.VATRate);
             decimal optionsPrice = 0;
 
             var validatedSelectedOptionProducts = new Dictionary<int, CarModelOptionProduct>();
@@ -214,7 +215,7 @@ namespace CarConfigurator.BL.Services
                 if (availableOption.DefaultProductIds.Contains(userSelectedProduct.Id))
                     continue;
 
-                optionsPrice += userSelectedProduct.NetPrice * (1 + userSelectedProduct.VATRate / 100);
+                optionsPrice += PriceHelper.GetGrossPrice(userSelectedProduct.NetPrice, userSelectedProduct.VATRate);
             }
 
             var totalPrice = basePrice + optionsPrice;

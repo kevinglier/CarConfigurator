@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CarModelService } from './car-model.service';
 import { Observable, forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -15,7 +15,6 @@ import { RestService } from './rest.service';
 export class ConfiguratorService {
 
     constructor(
-        @Inject('BASE_URL') private _baseUrl: string,
         private _carModelService: CarModelService,
         private _restService: RestService
     ) {
@@ -28,8 +27,8 @@ export class ConfiguratorService {
 
                 const observables = <any>{ modelOptions: this._carModelService.getModelOptions(model) };
 
-                // If sharing-code is given (in the LocalStorage) lets try to get the selection back then.
                 if (code) {
+                    // If sharing-code is given (in the LocalStorage) lets try to get the saved configuration.
                     observables.savedConfiguration = this.getSavedConfiguration(code);
                 } else {
                     const storage = this.readFromLocalStorage();
@@ -44,6 +43,10 @@ export class ConfiguratorService {
                             result.modelOptions,
                             result.savedConfiguration ? result.savedConfiguration : null);
 
+                        // persist URL Code in localStorage
+                        if (code && result.savedConfiguration)
+                            this.saveConfigurationToLocalStorage(model.ean, code);
+
                         return carConfiguration;
                     })
                 );
@@ -51,9 +54,9 @@ export class ConfiguratorService {
     }
 
     getPriceSummaryForSelectedCarOptionProducts(
-            carModelEAN: string,
-            carModelOptionProduct: { [optionId: number]: CarModelOptionProduct }):
-        Observable<CarConfiguratorSummary> {
+        carModelEAN: string,
+        carModelOptionProduct: { [optionId: number]: CarModelOptionProduct }
+    ): Observable<CarConfiguratorSummary> {
 
         // read the code from localStorage if available so that changes will be updated in the db for this configuration
         // if there is no code given, the rest endpoint will set one that will be used in the bottom of this function.

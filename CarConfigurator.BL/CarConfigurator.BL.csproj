@@ -8,4 +8,8 @@
     <ProjectReference Include="..\CarConfigurator.DL\CarConfigurator.DL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

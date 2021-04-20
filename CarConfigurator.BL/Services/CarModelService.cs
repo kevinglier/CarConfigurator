@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CarConfigurator.BL.Helpers;
 using CarConfigurator.BL.Interfaces;
 using CarConfigurator.BL.Models;
 using CarConfigurator.DL.Models;
@@ -50,7 +51,7 @@ namespace CarConfigurator.BL.Services
             if (product == null)
                 return null;
 
-            var grossPrice = product.NetPrice * (1 + product.VATRate / 100);
+            var grossPrice = PriceHelper.GetGrossPrice(product.NetPrice, product.VATRate);
 
             return new CarModel(product.EAN, product.Name, product.Description, grossPrice);
         }
